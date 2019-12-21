@@ -2,6 +2,8 @@ import Slider from '@material-ui/core/Slider';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import Button from '@material-ui/core/Button';
+import App from '../App';
 
 const useStyles = makeStyles({
   root: {
@@ -9,11 +11,9 @@ const useStyles = makeStyles({
   },
 });
 
-
-
-export default function RangeSlider()  {
-  const classes = useStyles();
-  const [Min_Age, setMinAge] = React.useState(18);
+export default  function RangeSlider(props)  {
+  const classes =useStyles();
+  const [Min_Age , setMinAge] = React.useState(18);
   const [Max_Age, setMaxAge] = React.useState(99);
 
   const MinAgeChange = (event, newValue) => {
@@ -30,26 +30,36 @@ export default function RangeSlider()  {
     setMaxAge(newValue);
   };
 
-  return (
-    <div className={classes.root}>
-      <Typography id="range-slider" gutterBottom >
-        <h1>Show Ages</h1>
-      </Typography>
-      <Slider
-        value={Min_Age} 
-        onChange={MinAgeChange}
-        valueLabelDisplay="on"
-        aria-labelledby="range-slider"
-      />
+function submitAges() {
+  props.handlerMinAge(Min_Age);
+  props.handlerMaxAge(Max_Age); 
+  props.filter_tinder(props.filter_Gender);
+  
+}
+ 
 
-<Slider
-        value={Max_Age} 
-        onChange={MaxAgeChange}
-        valueLabelDisplay="on"
-        aria-labelledby="range-slider"
-      />
-<p> Min Age: {Min_Age} </p>
-<p> Max Age: {Max_Age} </p>
+  return (    
+    <div className={classes.root}>
+              
+         <Typography id="range-slider" gutterBottom >
+         <h1>Show Ages</h1>
+         </Typography>
+         
+         <Slider value={Min_Age} onChange={MinAgeChange} valueLabelDisplay="on" aria-labelledby="range-slider" />
+         <Slider value={Max_Age} onChange={MaxAgeChange} valueLabelDisplay="on" aria-labelledby="range-slider"/>
+
+         
+
+          <p> Min Age: {Min_Age} </p>
+          <p> Max Age: {Max_Age} </p>
+
+          <div className="submit_btn">               
+           <Button onClick={submitAges} variant="contained" color="primary">
+           Submit 
+         </Button>
+            </div>
     </div>
   );
+ 
 }
+

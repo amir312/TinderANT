@@ -4,11 +4,37 @@ import uuid from 'uuid';
 import Header from './layout/Header';
 import Like from './Components/like';
 import RandomCard from './Components/randomCard';
+import Age from './Components/Age';
+import Gender from './Components/Gender';
+import Submit from './Components/Submit';
+import User from './Components/user';
+import { Route } from 'react-router-dom';
+import { Switch, Link, withRouter } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import { BrowserRouter as Router } from 'react-router-dom';
+import SelectAge from './Components/user';
+import { Alert } from 'react-bootstrap';
+import ReactDOM from 'react-dom';
+
+
 
 
 class App extends Component {
 constructor(props){
 super(props);
+this.handler = this.handler.bind(this);
+this.handlerMinAge=this.handlerMinAge.bind(this);
+this.handlerMaxAge=this.handlerMaxAge.bind(this);
+
+const routing = (
+  <Router>
+    <Route execet path= "/" Component={App, Like}></Route>
+    <Route path = "/Filtered" Component={RandomCard} />
+  </Router>
+)
+
+
+
 this.state = {
       users : [
     {
@@ -236,35 +262,75 @@ this.state = {
 }
 ],
 seacrchAge:'',
-userIndex: '0'
+userIndex: 1,
+filter_Gender:'',
+filter_MinAge:0,
+filter_MaxAge:0,
+filtered_Array:[],
 }
 
 }
 
-filterAge=(age)=>{
-  this.setState({seacrchAge: age})
+handlerMinAge(passMinAge) {
+  this.setState({
+    filter_MinAge: passMinAge
+  });
+}
+
+handlerMaxAge(passMaxAge) {
+  this.setState({
+    filter_MaxAge: passMaxAge
+  });
+}
+
+handler(passGender) {
+  this.setState({
+    filter_Gender: passGender
+  });
+
+}
+nextUser = () =>{
+  alert(this.state.userIndex);
+  this.setState({userIndex:this.state.userIndex+1});
+}
+
+handlerFiltered_Array(arr) {
+  this.setState({
+    filtered_Array: arr
+  });
+}
+
+filter_tinder=()=>{
+  this.handler(this.state.filter_Gender);
+  var filterArr=[];
+  var filter_index=0
+  this.state.users.forEach(element => {
+  if(element.gender==this.state.filter_Gender && element.age>=this.state.filter_MinAge && element.age<=this.state.filter_MaxAge ){
+    filterArr[filter_index]=element;
+    filter_index++;
+  }
+});   
+this.handlerFiltered_Array(filterArr);
+
 }
   render(){
-    const ageF=30;
-    let filterUsers = this.state.users.filter((ageF)=>{
-    return this.state.users.age >ageF
-});
-
 
   return (
-    <div className="App">
-        <Header/>
-        <RandomCard 
-        userIndex={this.state.userIndex}       
-        usersList= {this.state.users}
-        filterAge={this.filterUsers}
-        />
-        <Like userIndex={this.state.userIndex}/>
+      <div className="App">
+          <Header/>
+          <h1>Min Age: {this.state.filter_MinAge}  Max Age:  {this.state.filter_MaxAge }</h1>
+          <h1>Gender: {this.state.filter_Gender}</h1>
+          <Gender handler={this.handler} filter_Gender={this.filter_Gender} genderSelectDDL={this.genderSelectDDL}/>
+          <Age filter_tinder={this.filter_tinder} usersList= {this.users} user_gender={this.user_gender} setGender={this.setGender} filter_MinAge={this.filter_MinAge} handlerMaxAge={this.handlerMaxAge} handlerMinAge={this.handlerMinAge}  filter_Gender={this.filter_Gender} />
+          <Submit goToUser={this.goToUser}/>
+          <SelectAge  filter_tinder={this.filter_tinder} usersList= {this.users} user_gender={this.user_gender} setGender={this.setGender}/>
+          <RandomCard usersList={this.state.users} userIndex={this.state.userIndex} />
+          <Like userIndex={this.userIndex}  nextUser={this.nextUser}/>
+          
     </div>
   );
-  }
+  }     
 }
 
 export default App;
-
 

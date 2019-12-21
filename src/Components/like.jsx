@@ -11,17 +11,7 @@ import Button from '@material-ui/core/Button';
 
 
 export default class like extends Component  {
-constructor(props){
-    super(props);
-    this.state={
-        userIndex:0
-    }
-}
-    nextUser = () =>{
-        this.setState({
-            userIndex:4,
-        });
-     }
+
 
 
    render(){
@@ -29,8 +19,8 @@ constructor(props){
    
         return(
             <Container>      
-            <Button variant="contained" color="primary" onClick={this.nextUser}><ThumbUpAltIcon/></Button>{' '}{' '}{' '}
-            <Button onClick={this.nextUser} variant="contained" color="primary"><ThumbDownIcon /></Button>
+            <Button onClick={()=>this.props.nextUser()} variant="contained" color="primary" ><ThumbUpAltIcon/></Button>{' '}{' '}{' '}
+            <Button onClick={()=>this.props.nextUser()} variant="contained" color="primary"><ThumbDownIcon /></Button>
       
             </Container>
 
@@ -38,7 +28,12 @@ constructor(props){
               
         }
         
+       
+          
+        }
+        
 
 
-}
+
+
 

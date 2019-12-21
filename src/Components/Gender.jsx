@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
-import './Gender_style.css';
+
 
 class Gender extends Component {
 
-    constructor (props) {
-        super (props);
-        this.state = {
-            gender : null
-        };
+ constructor(props){
+    super(props);
+    this.state={
+        genderChange:''
     }
+    this.changeGender=this.changeGender.bind(this);
+        }
 
+        changeGender(event){
+            this.setState({
+                genderChange:event.target.value,
+            }
+            );
+            this.props.handler(this.state.genderChange);  
 
+            }            
     render() {
+     
         return (
             <div class = "gender">
-       <select >
-         <option>Select gender</option>
-         <option value="male">Male</option>
-         <option value="female">Female</option>
-       </select>
+                <select value={this.state.value}  onChange= {this.changeGender}>
+                    <option>Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+               
             </div>
         );
     }
 }
+
+//             this.props.handler(this.state.genderChange);  
+
+
 
 export default Gender;
