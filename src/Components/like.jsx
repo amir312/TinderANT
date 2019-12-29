@@ -21,14 +21,11 @@ export default class like extends Component  {
       
    render(){
 
- 
-
-
         return(
             <Container>      
             <Button onClick={this.transferFuncs} variant="contained" color="primary" ><ThumbUpAltIcon/></Button>{' '}{' '}{' '}
             <Button onClick={()=>this.props.nextUser()} variant="contained" color="primary"><ThumbDownIcon /></Button>
-            <p> <Button onClick={()=>this.props.showall()} variant="contained" color="primary"><Link to="/mylikes">See My Likes</Link></Button></p>
+            <p> <Button variant="contained" color="primary"><Link to="/mylikes">See My Likes</Link></Button></p>
 
             </Container>
 
@@ -40,8 +37,5 @@ export default class like extends Component  {
           
         }
         
-
-
-
 
 
