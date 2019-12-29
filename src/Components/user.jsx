@@ -7,7 +7,7 @@ export class user extends Component {
     render() {
         return (
             <div>
-              
+          
             </div>
         )
     }

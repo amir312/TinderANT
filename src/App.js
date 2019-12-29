@@ -7,7 +7,6 @@ import RandomCard from './Components/randomCard';
 import Age from './Components/Age';
 import Gender from './Components/Gender';
 import Submit from './Components/Submit';
-import User from './Components/user';
 import { Route } from 'react-router-dom';
 import { Switch, Link, withRouter } from 'react-router-dom';
 import { Container } from '@material-ui/core';
@@ -15,7 +14,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import SelectAge from './Components/user';
 import { Alert } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
-
+import LikedUsers from './Components/LikedUsers';
 
 
 
@@ -26,17 +25,9 @@ this.handler = this.handler.bind(this);
 this.handlerMinAge=this.handlerMinAge.bind(this);
 this.handlerMaxAge=this.handlerMaxAge.bind(this);
 
-const routing = (
-  <Router>
-    <Route execet path= "/" Component={App, Like}></Route>
-    <Route path = "/Filtered" Component={RandomCard} />
-  </Router>
-)
-
-
 
 this.state = {
-      users : [
+ users : [
     {
         id: uuid.v4(),
         name: 'David Matos',
@@ -264,9 +255,12 @@ this.state = {
 seacrchAge:'',
 userIndex: 1,
 filter_Gender:'',
-filter_MinAge:0,
-filter_MaxAge:0,
+filter_MinAge:18,
+filter_MaxAge:99,
 filtered_Array:[],
+likes_Arr:[],
+likes_index:0,
+show_liked:'',
 }
 
 }
@@ -290,15 +284,35 @@ handler(passGender) {
 
 }
 nextUser = () =>{
-  alert(this.state.userIndex);
-  this.setState({userIndex:this.state.userIndex+1});
+  this.setState({
+    userIndex:this.state.userIndex+1
+  });
 }
+
+showall = () =>{
+  var show_liked='';
+   this.state.likes_Arr.forEach(element => {
+   this.show_liked = <div> {element.name} <p > {element.age}</p> <p>{element.location}</p> <p>{element.image}</p></div> ;
+
+   });
+   this.setState({
+    show_liked:show_liked
+ })
+ }
+ 
+
 
 handlerFiltered_Array(arr) {
   this.setState({
     filtered_Array: arr
   });
 }
+
+// handlerLiked_Array(arrLikes) {
+//   this.setState({
+//     likes_Arr: arrLikes
+//   });
+// }
 
 filter_tinder=()=>{
   this.handler(this.state.filter_Gender);
@@ -313,24 +327,61 @@ filter_tinder=()=>{
 this.handlerFiltered_Array(filterArr);
 
 }
+
+Add_To_Likes_Arr=()=>{
+  const arr1 =[this.state.users[this.state.userIndex]];
+  const arr2= this.state.likes_Arr;
+  const arr3= arr1.concat(arr2);
+  this.setState({likes_Arr: arr3});
+  console.log(this.state.likes_Arr);
+}
+
+
+ 
+
+
   render(){
 
   return (
+
+
+    
+    <Router>
       <div className="App">
-          <Header/>
-          <h1>Min Age: {this.state.filter_MinAge}  Max Age:  {this.state.filter_MaxAge }</h1>
-          <h1>Gender: {this.state.filter_Gender}</h1>
-          <Gender handler={this.handler} filter_Gender={this.filter_Gender} genderSelectDDL={this.genderSelectDDL}/>
-          <Age filter_tinder={this.filter_tinder} usersList= {this.users} user_gender={this.user_gender} setGender={this.setGender} filter_MinAge={this.filter_MinAge} handlerMaxAge={this.handlerMaxAge} handlerMinAge={this.handlerMinAge}  filter_Gender={this.filter_Gender} />
-          <Submit goToUser={this.goToUser}/>
-          <SelectAge  filter_tinder={this.filter_tinder} usersList= {this.users} user_gender={this.user_gender} setGender={this.setGender}/>
-          <RandomCard usersList={this.state.users} userIndex={this.state.userIndex} />
-          <Like userIndex={this.userIndex}  nextUser={this.nextUser}/>
-          
-    </div>
+      <Header/>
+
+      <div className="App-body">
+        
+             {/* <div>
+              <h1>Min Age: {this.state.filter_MinAge}  Max Age:  {this.state.filter_MaxAge }</h1>
+                <h1>Gender: {this.state.filter_Gender}</h1>
+            </div> 
+        */}
+
+            <Switch>
+              <Route exact path ="/">
+                <Gender handler={this.handler} filter_Gender={this.filter_Gender} genderSelectDDL={this.genderSelectDDL}/>
+                <Age filter_tinder={this.filter_tinder} usersList= {this.users} user_gender={this.user_gender} setGender={this.setGender} filter_MinAge={this.filter_MinAge} handlerMaxAge={this.handlerMaxAge} handlerMinAge={this.handlerMinAge}  filter_Gender={this.filter_Gender} />
+                
+              </Route>
+
+              <Route path="/filter">
+                <RandomCard usersList={this.state.filtered_Array} userIndex={this.state.userIndex} />
+                <Like userIndex={this.userIndex}  nextUser={this.nextUser} Add_To_Likes_Arr={this.Add_To_Likes_Arr} likes_Arr={this.likes_Arr} showall={this.showall}/>       
+              </Route>
+
+              <Route path ="/mylikes">
+                <LikedUsers likes_Arr={this.likes_Arr} show_liked={this.show_liked}/>
+              </Route>
+
+            </Switch>
+        
+        </div>
+
+      </div>
+   </Router>
   );
   }     
 }
 
 export default App;
-

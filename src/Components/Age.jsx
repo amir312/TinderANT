@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import App from '../App';
+import { Switch, Route, Link, withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +22,7 @@ export default  function RangeSlider(props)  {
       newValue = 18;
     }
     setMinAge(newValue);
+    props.handlerMinAge(Min_Age);
   };
 
   const MaxAgeChange = (event, newValue) => {
@@ -28,6 +30,7 @@ export default  function RangeSlider(props)  {
       newValue = 99;
     }   
     setMaxAge(newValue);
+    props.handlerMaxAge(Max_Age);
   };
 
 function submitAges() {
@@ -39,27 +42,35 @@ function submitAges() {
  
 
   return (    
-    <div className={classes.root}>
+    <div className={classes.root} >
               
          <Typography id="range-slider" gutterBottom >
-         <h1>Show Ages</h1>
+         {/* <h1>Show Ages</h1> */}
          </Typography>
          
-         <Slider value={Min_Age} onChange={MinAgeChange} valueLabelDisplay="on" aria-labelledby="range-slider" />
-         <Slider value={Max_Age} onChange={MaxAgeChange} valueLabelDisplay="on" aria-labelledby="range-slider"/>
+         <Slider value={Min_Age} onChange={MinAgeChange}  valueLabelDisplay="on" aria-labelledby="range-slider" />
+         <Slider value={Max_Age} onChange={MaxAgeChange}  valueLabelDisplay="on" aria-labelledby="range-slider"/>
 
          
-
+{/* 
           <p> Min Age: {Min_Age} </p>
-          <p> Max Age: {Max_Age} </p>
+          <p> Max Age: {Max_Age} </p> */}
 
-          <div className="submit_btn">               
-           <Button onClick={submitAges} variant="contained" color="primary">
-           Submit 
+          <div style={agesStyle} className="submit_btn">               
+           <Button onClick={submitAges} variant="contained" color="primary"> 
+           <Link to="/filter">Submit</Link>
          </Button>
             </div>
     </div>
   );
  
 }
+
+const agesStyle ={
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center"
+  
+}
+
 
