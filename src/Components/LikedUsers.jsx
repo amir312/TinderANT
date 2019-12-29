@@ -1,20 +1,17 @@
 import React, { Component } from 'react'
-import Image from 'react-bootstrap/Image'
 
-export default class RandomCard extends Component {
-
-
-   
+export default class LikedUsers extends Component {
 
     render() {
-
         return (
-                <div>
-                    <h1 style={h1font}>My Likes</h1>
-                    {this.props.show_liked}
-                </div>
-        )
-                             
+
+            <ul>
+                <h1>My Likes</h1>
+            {this.props.likes_Arr.map(item => {
+            return <div> <img style={imageStyle} src={item.image} fluid></img> <br/> {item.name} , {item.age} , {item.location} <br/> <br/> </div>    ;
+            })}
+          </ul>           
+        )                            
     }
 }
 
@@ -23,6 +20,3 @@ const imageStyle = {
 
 }
 
-const h1font ={
-    color: 'blue'
-}

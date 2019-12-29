@@ -34,8 +34,4 @@ class Gender extends Component {
     }
 }
 
-//             this.props.handler(this.state.genderChange);  
-
-
-
 export default Gender;

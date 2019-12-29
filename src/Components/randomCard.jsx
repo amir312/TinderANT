@@ -6,8 +6,7 @@ export default class RandomCard extends Component {
    
     render() {
        
-        return (
-           
+        return (           
             <div>                       
                 <Image style={imageStyle} src={this.props.usersList[this.props.userIndex].image} fluid/>
                 <p>{this.props.usersList[this.props.userIndex].name}</p>
