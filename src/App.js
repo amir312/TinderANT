@@ -6,17 +6,13 @@ import Like from './Components/like';
 import RandomCard from './Components/randomCard';
 import Age from './Components/Age';
 import Gender from './Components/Gender';
-import Submit from './Components/Submit';
 import { Route } from 'react-router-dom';
 import { Switch, Link, withRouter } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { BrowserRouter as Router } from 'react-router-dom';
-import SelectAge from './Components/user';
 import { Alert } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import LikedUsers from './Components/LikedUsers';
-
-
 
 class App extends Component {
 constructor(props){
@@ -24,7 +20,6 @@ super(props);
 this.handler = this.handler.bind(this);
 this.handlerMinAge=this.handlerMinAge.bind(this);
 this.handlerMaxAge=this.handlerMaxAge.bind(this);
-
 
 this.state = {
  users : [
@@ -253,7 +248,7 @@ this.state = {
 }
 ],
 seacrchAge:'',
-userIndex: 1,
+userIndex: 0,
 filter_Gender:'',
 filter_MinAge:18,
 filter_MaxAge:99,
@@ -262,7 +257,6 @@ likes_Arr:[],
 likes_index:0,
 show_liked:'',
 }
-
 }
 
 handlerMinAge(passMinAge) {
@@ -288,20 +282,7 @@ nextUser = () =>{
     userIndex:this.state.userIndex+1
   });
 }
-
-showall = () =>{
-  var show_liked='';
-   this.state.likes_Arr.forEach(element => {
-   this.show_liked = <div> {element.name} <p > {element.age}</p> <p>{element.location}</p> <p>{element.image}</p></div> ;
-
-   });
-   this.setState({
-    show_liked:show_liked
- })
- }
  
-
-
 handlerFiltered_Array(arr) {
   this.setState({
     filtered_Array: arr
@@ -325,27 +306,19 @@ filter_tinder=()=>{
   }
 });   
 this.handlerFiltered_Array(filterArr);
-
 }
 
 Add_To_Likes_Arr=()=>{
-  const arr1 =[this.state.users[this.state.userIndex]];
+  const arr1 =[this.state.filtered_Array[this.state.userIndex]];
   const arr2= this.state.likes_Arr;
   const arr3= arr1.concat(arr2);
   this.setState({likes_Arr: arr3});
   console.log(this.state.likes_Arr);
 }
 
-
- 
-
-
   render(){
 
-  return (
-
-
-    
+  return (   
     <Router>
       <div className="App">
       <Header/>
@@ -366,14 +339,13 @@ Add_To_Likes_Arr=()=>{
               </Route>
 
               <Route path="/filter">
-                <RandomCard usersList={this.state.filtered_Array} userIndex={this.state.userIndex} />
+                <RandomCard usersList={this.state.filtered_Array} userIndex={this.state.userIndex} likes_Arr={this.likes_Arr} />
                 <Like userIndex={this.userIndex}  nextUser={this.nextUser} Add_To_Likes_Arr={this.Add_To_Likes_Arr} likes_Arr={this.likes_Arr} showall={this.showall}/>       
               </Route>
 
               <Route path ="/mylikes">
-                <LikedUsers likes_Arr={this.likes_Arr} show_liked={this.show_liked}/>
+                <LikedUsers likes_Arr={this.state.likes_Arr}/>
               </Route>
-
             </Switch>
         
         </div>
@@ -383,5 +355,4 @@ Add_To_Likes_Arr=()=>{
   );
   }     
 }
-
 export default App;
